@@ -1,0 +1,146 @@
+{% load staticfiles %}
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Groups</title>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+	<link rel="stylesheet" href="{% static 'css/results_style.css' %} ">
+
+  
+</head>
+
+<body>
+    <div class="wrapper">
+        <game_text><a href = "{%url 'main'%}">MENU</a></game_text>
+        <game_text>Groups
+        </game_text>
+        <div><br><br><div class="photo2" data-title="Add">
+			<img data-toggle="modal" data-target="#addGroupModal" src="{% static 'img/add.png' %}" alt="edit" style="width:30px;"></div></div>
+    </div>
+
+
+    <div id="addGroupModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="color:black;">
+            <div class="modal-header">
+                <h3>Add new group</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <form class="form" role="form" autocomplete="off" id="formAddGroup" novalidate="" method="POST" action="{%url 'new_group'%}">
+                    {%csrf_token%}
+                    <div class="form-group">
+                        <label for="gname">Enter group name</label>
+                        <input type="text" class="form-control form-control-lg" name="gname" id="gname" required="">
+                        <div class="invalid-feedback">Oops, you missed this one.</div>
+                    </div>
+
+                    <div class="form-group py-4">
+                        <button class="btn btn-outline-secondary btn-lg" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                        <button type="submit" class="btn btn-success btn-lg float-right" id="btnAddGroup">Add group</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <!-- Modal -->
+<div id="deleteModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="color:black;">
+            <div class="modal-header">
+                <h3>Remove group from list</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <form class="form" role="form" autocomplete="off" id="formExport" novalidate="" method="POST" action="del_group">
+                    <input type="hidden" id="valToDel" value="" name="valToDel">
+                        <h4>Are you sure? </h4>
+                        {%csrf_token%}
+                    <div class="form-group py-4">
+                        <button class="btn btn-outline-secondary btn-lg" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                        <button type="submit" class="btn btn-danger btn-lg float-right" id="btnExport">Remove</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table class="container">
+	<thead>
+		<tr>
+			<th><h1>#</h1></th>
+			<th><h1>GROUP NAME</h1></th>
+			<th><h1>NUMBER OF STUDENTS</h1></th>
+			<th><h1>AVERAGE COINS</h1></th>
+            <th><h1></h1></th>
+            <th><h1></h1></th>
+		</tr>
+	</thead>
+	<tbody>
+	{%for row in data%}
+		<tr>
+			<td>{{row.idGroup}}</td>
+			<td>{{row.name}}</td>
+			<td>{{row.mean_coins}}</td>
+			<td>{{row.size}}</td>
+            <td><a href="{%url 'table_s' row.idGroup%}">
+				<div class="photo" data-title="Edit"><img src="{% static 'img/edit.png' %}" alt="edit" style="width:30px;"></div>
+            </a>
+                </td>
+            <td>
+                 <div class="photo" data-title="Del" data-toggle="modal" data-target="#deleteModal">
+                     <img src="{% static 'img/delete2.png' %}" alt="delete" style="width:30px;" onclick = "deleteGroup({{row.idGroup}})">
+                </div>
+            </td>
+		</tr>
+	{%endfor%}
+		
+
+	</tbody>
+</table>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+	<script src="{%static 'js/bootstrap.min.js'%}"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <!-- our custom js scripts -->
+    <script  src="{%static 'js/main_js.js'%}"></script>
+    
+    
+    <script>
+          $("#btnAddGroup").click(function(event) {
+    //Fetch form to apply custom Bootstrap validation
+    var form = $("#formAddGroup")
+    if (form[0].checkValidity() === false) {
+      event.preventDefault()
+      event.stopPropagation()
+    }
+
+    form.addClass('was-validated');
+  });
+        </script>
+<script>
+    function deleteGroup(idDel){
+        var toDel = document.getElementById("valToDel");
+        toDel.value = idDel;
+        alert(toDel.value)
+    }
+
+</script>
+
+
+</body>
+</html>

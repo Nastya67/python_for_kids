@@ -1,0 +1,72 @@
+{% load staticfiles %}
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Results</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/results_style.css' %}" rel="stylesheet">
+    
+    
+    
+  
+</head>
+
+<body>
+    <div class="wrapper">
+        <game_text><a href = "{% url 'main'%}">MENU</a></game_text>
+        <game_text>RESULTS TABLE (group kp-51)
+        </game_text>
+        <div></div>
+    </div>
+    
+<table class="container">
+	<thead>
+		<tr>
+			<th><h1>#</h1></th>
+			<th><h1>NICKNAME</h1></th>
+			<th><h1>REAL NAME</h1></th>
+			<th><h1>COINS</h1></th>
+		</tr>
+	</thead>
+	<tbody>
+	{%for row in data%}
+		<tr>
+			<td>{{row.idStudent}}</td>
+			<td>{{row.name}}</td>
+			<td>{{row.real_name}}</td>
+			<td>{{row.coins}}</td>
+		</tr>
+	{%endfor%}
+
+	</tbody>
+</table>
+    
+
+    
+    
+    
+    
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    
+    <!-- our custom js scripts -->
+    <script  src="{% static 'js/main_js.js' %}"></script>
+    
+    
+    <script type="text/javascript">
+ $(document).ready(function() {
+ $("body").css("display", "none");
+ $("body").fadeIn(800);
+ });
+</script>
+
+
+</body>
+</html>

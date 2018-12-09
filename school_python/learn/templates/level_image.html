@@ -1,0 +1,140 @@
+{% load staticfiles %}
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Level</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static '/css/code_style.css' %}" rel="stylesheet">
+    
+    
+    
+  
+</head>
+
+<body>
+    
+    <div class="wrapper_header" style= "border-bottom:5px dashed white;">
+        <game_text><a href = "{% url 'main' %}">MENU</a></game_text>
+        <game_text>LEVEL 2
+        </game_text>
+        <div></div>
+    </div>
+    <div class="wrapper_image" style= "border-bottom:5px dashed white;">
+        <div></div>
+        <div >
+        <span >
+            <game_text>
+                <br><br>
+                <b>> NEW TASK</b>
+            <br><br>
+            <b>#hints</b>
+            <br><br>
+            > you have to get to <b>FINISH</b>
+            <br><br>
+            > click on the <b>commands buttons</b> to create algorithm
+            <br><br>
+            > click the <b>green button</b> to run your code
+
+            </game_text>
+        </span>
+        </div>
+        <div style= "border-right:5px dashed white;"></div>
+        <div></div>
+        <span><img src="{% static 'img/map.png' %}" alt="map" style="width:500px;"></span>
+        <div style= "border-right:5px dashed white;"></div>
+        <div></div>
+        <div style="text-align:center;">
+            <span><game_text><br><br><b>COMMANDS</b></game_text></span><br><br><br><br><br><br>
+            <p><div class="wrapper_commands">
+                <div></div>
+                <span><img src="{% static 'img/up.png' %}" alt="run" style="width:80px;" onclick = "up()"></span>
+                <div></div>
+                <span><img src="{% static 'img/down.png' %}" alt="run" style="width:80px;" onclick = "down()"></span>
+                <div></div>
+            </div>
+            <br><br>
+            <div class="wrapper_commands">
+                <div></div>
+                <span><img src="{% static 'img/right.png' %}" alt="run" style="width:80px;" onclick = "right()"></span>
+                <div></div>
+                <span><img src="{% static 'img/left.png' %}" alt="run" style="width:80px;" onclick = "left()"></span>
+                <div></div>
+            </div>
+        </div>
+        <div></div>
+        
+    </div>
+    <div class="wrapper2">
+        <div></div>
+        <span><img src="{% static 'img/run.png' %}" alt="run" style="width:30px;" onclick = "run()"></span>
+        <div></div>
+        <span><img src="{% static 'img/stop.png' %}" alt="stop" style="width:50px;" onclick = "stop()"></span>
+        <div></div>
+        <span><img src="{% static 'img/delete.png' %}" alt="delete" style="width:50px;" onclick = "delete()"></span>
+        <div></div>
+        <span><p id="console"></p></span>
+    </div>
+    
+    
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    
+    <!-- our custom js scripts -->
+    <script  src="{% static 'js/main_js.js' %}"></script>
+
+<script src="../node_modules/monaco-editor/min/vs/loader.js"></script>
+<script>
+	require.config({ paths: { 'vs': '../node_modules/monaco-editor/min/vs' }});
+
+	require.config({
+		'vs/nls' : {
+			availableLanguages: {
+				'*': 'de'
+			}
+		}
+	});
+    
+
+	require(['vs/editor/editor.main'], function() {
+        
+        monaco.editor.defineTheme('myCustomTheme', {
+	base: 'vs-dark', // can also be vs-dark or hc-black
+	inherit: true, // can also be false to completely replace the builtin rules
+	rules: [
+		{ token: 'comment', foreground: '9C9CA0', fontStyle: 'italic' },
+		{ token: 'comment.js', foreground: '008800', fontStyle: 'bold' },
+		{ token: 'comment.css', foreground: '0000ff' } // will inherit fontStyle from `comment` above
+	]
+});
+    
+		var editor = monaco.editor.create(document.getElementById('container'), {
+			value: [
+				'function x() {',
+				'\tconsole.log("Hello world!");',
+				'}'
+			].join('\n'),
+			language: 'python',
+            theme: "myCustomTheme"
+		});
+	});
+</script>
+    
+    
+    <script type="text/javascript">
+ $(document).ready(function() {
+ $("body").css("display", "none");
+ $("body").fadeIn(800);
+ });
+</script>
+
+
+</body>
+</html>
